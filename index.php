@@ -48,7 +48,9 @@ $translations = [
         'special_select' => 'Sonderzeichen Auswahl',
         'warn_sum' => '⚠ Hinweis: Die Summe der gewählten Zeichenarten überschreitet die Passwortlänge.',
         'warn_length' => '⚠ Achtung: Eine Passwortlänge unter 8 gilt als unsicher.',
-        'warn_special' => '⚠ Achtung: Passwörter ohne Sonderzeichen gelten als schwächer.'
+        'warn_special' => '⚠ Achtung: Passwörter ohne Sonderzeichen gelten als schwächer.',
+        'score' => 'Bewertung',
+        'infotext' => 'Es wird empfohlen komplexe Passwörter zu verwenden.<br>Die Passwörter werden von der Seite grob auf Sicherheit bewertet und es sollten nur Passwörter mit einem Score von 100% verwendet werden.<br><a href="https://www.bsi.bund.de/EN/Themen/Verbraucherinnen-und-Verbraucher/Informationen-und-Empfehlungen/Cyber-Sicherheitsempfehlungen/Accountschutz/Sichere-Passwoerter-erstellen/sichere-passwoerter-erstellen_node.html" target="_blank">HIER</a> gibt es weitergehende Informationen.<br>Wenn du Änderungswünsche oder Bugs einmelden willst, klicke <a href="https://github.com/DerHary/PHP-Password-Generator/issues" target="_blank">HIER</a> (GitHub)'
     ],
     'en' => [
         'title' => '🔐 Password Generator',
@@ -62,7 +64,10 @@ $translations = [
         'special_select' => 'Special Character Selection',
         'warn_sum' => '⚠ Warning: Sum of selected character types exceeds password length.',
         'warn_length' => '⚠ Warning: Passwords shorter than 8 characters are considered insecure.',
-        'warn_special' => '⚠ Warning: Passwords without special characters are considered weaker.'
+        'warn_special' => '⚠ Warning: Passwords without special characters are considered weaker.',
+        'score' => 'Score',
+        'infotext' => 'It is recommended to use complex passwords.<br>The passwords are roughly evaluated for security by the site, and only passwords with a score of 100% should be used.<br>Further information is available <a href="https://www.bsi.bund.de/EN/Themen/Verbraucherinnen-und-Verbraucher/Informationen-und-Empfehlungen/Cyber-Sicherheitsempfehlungen/Accountschutz/Sichere-Passwoerter-erstellen/sichere-passwoerter-erstellen_node.html" target="_blank">HERE</a>.<br>If you want to report bugs or request changes, click <a href="https://github.com/DerHary/PHP-Password-Generator/issues" target="_blank">HERE</a> (GitHub)'
+
     ],
     'fr' => [
         'title' => '🔐 Générateur de mots de passe',
@@ -76,7 +81,10 @@ $translations = [
         'special_select' => 'Sélection des caractères spéciaux',
         'warn_sum' => '⚠ Attention : La somme des types de caractères dépasse la longueur du mot de passe.',
         'warn_length' => '⚠ Attention : Un mot de passe de moins de 8 caractères est considéré comme peu sûr.',
-        'warn_special' => '⚠ Attention : Les mots de passe sans caractères spéciaux sont considérés comme plus faibles.'
+        'warn_special' => '⚠ Attention : Les mots de passe sans caractères spéciaux sont considérés comme plus faibles.',
+        'score' => 'Évaluation',
+        'infotext' => 'Il est recommandé d’utiliser des mots de passe complexes.<br>Les mots de passe sont évalués de manière approximative par le site, et seuls ceux ayant un score de 100 % devraient être utilisés.<br>Plus d’informations <a href="https://www.bsi.bund.de/EN/Themen/Verbraucherinnen-und-Verbraucher/Informationen-und-Empfehlungen/Cyber-Sicherheitsempfehlungen/Accountschutz/Sichere-Passwoerter-erstellen/sichere-passwoerter-erstellen_node.html" target="_blank">ICI</a>.<br>Pour signaler un bug ou faire une suggestion, cliquez <a href="https://github.com/DerHary/PHP-Password-Generator/issues" target="_blank">ICI</a> (GitHub)'
+
     ],
     'es' => [
         'title' => '🔐 Generador de contraseñas',
@@ -90,7 +98,10 @@ $translations = [
         'special_select' => 'Selección de caracteres especiales',
         'warn_sum' => '⚠ Advertencia: La suma de los tipos de caracteres excede la longitud de la contraseña.',
         'warn_length' => '⚠ Advertencia: Contraseñas con menos de 8 caracteres se consideran inseguras.',
-        'warn_special' => '⚠ Advertencia: Contraseñas sin caracteres especiales son más débiles.'
+        'warn_special' => '⚠ Advertencia: Contraseñas sin caracteres especiales son más débiles.',
+        'score' => 'Evaluación',
+        'infotext' => 'Se recomienda utilizar contraseñas complejas.<br>Las contraseñas se evalúan aproximadamente en cuanto a seguridad en este sitio, y solo deben usarse aquellas con una puntuación del 100%.<br>Más información <a href="https://www.bsi.bund.de/EN/Themen/Verbraucherinnen-und-Verbraucher/Informationen-und-Empfehlungen/Cyber-Sicherheitsempfehlungen/Accountschutz/Sichere-Passwoerter-erstellen/sichere-passwoerter-erstellen_node.html" target="_blank">AQUÍ</a>.<br>Si deseas reportar errores o proponer cambios, haz clic <a href="https://github.com/DerHary/PHP-Password-Generator/issues" target="_blank">AQUÍ</a> (GitHub)'
+
     ],
     'tr' => [
         'title' => '🔐 Şifre Oluşturucu',
@@ -104,7 +115,10 @@ $translations = [
         'special_select' => 'Özel karakter seçimi',
         'warn_sum' => '⚠ Uyarı: Karakter türlerinin toplamı şifre uzunluğunu aşıyor.',
         'warn_length' => '⚠ Uyarı: 8 karakterden kısa şifreler güvenli değildir.',
-        'warn_special' => '⚠ Uyarı: Özel karakter içermeyen şifreler daha zayıf kabul edilir.'
+        'warn_special' => '⚠ Uyarı: Özel karakter içermeyen şifreler daha zayıf kabul edilir.',
+        'score' => 'Değerlendirme',
+        'infotext' => 'Karmaşık şifreler kullanmanız önerilir.<br>Şifreler bu site tarafından güvenlik açısından kabaca değerlendirilir ve yalnızca %100 puan alan şifreler kullanılmalıdır.<br>Daha fazla bilgi için <a href="https://www.bsi.bund.de/EN/Themen/Verbraucherinnen-und-Verbraucher/Informationen-und-Empfehlungen/Cyber-Sicherheitsempfehlungen/Accountschutz/Sichere-Passwoerter-erstellen/sichere-passwoerter-erstellen_node.html" target="_blank">BURAYA</a> tıklayın.<br>Hata bildirmek veya öneride bulunmak istiyorsanız <a href="https://github.com/DerHary/PHP-Password-Generator/issues" target="_blank">BURAYA</a> tıklayın (GitHub)'
+
     ]
 ];
 
@@ -114,7 +128,7 @@ $all_specials = ['!' => '!', '?' => '?', '@' => '@', '$' => '$', '%' => '%', '#'
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $count        = getInt('count', 1, 1, 50);
-    $length       = getInt('length', 16, 5, 30);
+    $length       = getInt('length', 16, 3, 50);
     $num_numbers  = getInt('num_numbers', 2, 0, $length);
     $num_upper    = getInt('num_upper', 2, 0, $length);
     $num_specials = getInt('num_specials', 2, 0, $length);
@@ -168,10 +182,11 @@ for ($j = 0; $j < $count; $j++) {
 function PassStrength($Password) {
     // length check
     $numCount = 0;
-    // initial strength = len^2/6
-    $W = (strlen($Password) * strlen($Password)) / 6;
+    // initial strength
+    //$W = (strlen($Password) * strlen($Password)) / 6;
+    $W = min(strlen($Password) * 1.5, 30);
     if (is_numeric(substr($Password, 0, 1))) {
-        $numCount + 1; // note first character is numeric
+        $numCount += 1; // note first character is numeric
     }
     for ($i=1; $i<strlen($Password); $i++) {
         // if previous char was another one this is good, otherwise bad
@@ -191,11 +206,17 @@ function PassStrength($Password) {
     if ($numCount > strlen($Password) * 0.2 && $numCount < strlen($Password) * 0.7) { $W = $W + 5; }
     // not good if password is more than 50% numbers
     if ($numCount > strlen($Password) * 0.5) { $W = $W - 5; }
+    // other checks
+    if (!preg_match('/[A-Z]/', $Password)) $W -= 20; // no upper letters
+    if (!preg_match('/[a-z]/', $Password)) $W -= 20; // no small letters
+    if (!preg_match('/[0-9]/', $Password)) $W -= 20; // no digits
+    if (!preg_match('/[\W_]/', $Password)) $W -= 40; // no special chars
     // no negative results
-    if ($W < 0) { $W = 0; } elseif ($W > 100) { $W = 100; }
+    if ($W < 0) { $W = 1; } elseif ($W > 100) { $W = 100; }
     // return rounded result
     return round($W);
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars($lang) ?>">
@@ -204,10 +225,26 @@ function PassStrength($Password) {
 <title><?= $t['title'] ?></title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<?php include("img/base64_favicon.txt"); ?>
 <style>
 .card-copied { background-color: #d1e7dd !important; color: #0f5132 !important; border: 1px solid #0f5132; }
-.password-card { cursor: pointer; transition: transform 0.2s ease, opacity 0.2s ease; opacity: 0; }
-.password-card.visible { opacity: 1; transform: translateY(0); }
+.password-card {
+  cursor: pointer;
+  opacity: 0;
+  filter: blur(10px);
+  transform: scale(0.8) rotateY(45deg) translateY(40px);
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.6s ease-out;
+  transform-origin: center top;
+}
+
+.password-card.visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1) rotateY(0deg) translateY(0);
+}
 code { color: inherit !important; }
 .btn-wrap { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 .secbarbg-red       { background-color:#FF0000; }
@@ -242,10 +279,10 @@ function slider($name, $label, $value, $min, $max) {
   echo "<input type='range' class='form-range' name='$name' min='$min' max='$max' value='$value' oninput='this.previousElementSibling.querySelector(\"strong\").innerText = this.value'>";
 }
 slider("count", $t['pw_count'], $count, 1, 50);
-slider("length", $t['pw_length'], $length, 5, 30);
-slider("num_numbers", $t['pw_numbers'], $num_numbers, 0, $length);
-slider("num_upper", $t['pw_upper'], $num_upper, 0, $length);
-slider("num_specials", $t['pw_specials'], $num_specials, 0, $length);
+slider("length", $t['pw_length'], $length, 3, 50);
+slider("num_numbers", $t['pw_numbers'], $num_numbers, 0, 15);
+slider("num_upper", $t['pw_upper'], $num_upper, 0, 15);
+slider("num_specials", $t['pw_specials'], $num_specials, 0, 15);
 ?>
 </div>
 <div class="col-md-6">
@@ -256,6 +293,11 @@ slider("num_specials", $t['pw_specials'], $num_specials, 0, $length);
 <label class="form-check-label" for="special_<?= $char ?>"><?= htmlspecialchars($char) ?></label>
 </div>
 <?php endforeach; ?>
+<div class="card bg-info text-dark mt-3">
+  <div class="card-body p-2">
+    <small><?= $t['infotext'] ?></small>
+  </div>
+</div>
 </div>
 </div>
 <div class="btn-wrap mt-4">
@@ -271,9 +313,10 @@ slider("num_specials", $t['pw_specials'], $num_specials, 0, $length);
     <div class="col-md-4 col-sm-6 mb-3">
         <div class="card bg-secondary text-light h-100 password-card" id="card_<?= $index ?>">
             <div class="card-body d-flex justify-content-between align-items-center password-content" data-index="<?= $index ?>">
-            <code id="pw_<?= $index ?>"><?= htmlspecialchars($pw) ?></code>
-            <?php $percent = PassStrength($pw); $barClass = 'secbarbg-red'; if ($percent >= 100) { $barClass = 'secbarbg-green'; } elseif ($percent >= 90) { $barClass = 'secbarbg-yellow'; } elseif ($percent >= 50) { $barClass = 'secbarbg-orange'; } elseif ($percent >= 0) { $barClass = 'secbarbg-red'; } ?>
-            <div class="progress position-absolute bottom-0 start-0 w-100" style="height: 1px;">
+            <span class="position-absolute top-0 end-0 p-1 small text-white-50" title="<?= $t['score'] ?>"><?= PassStrength($pw) ?>%</span>
+            <code id="pw_<?= $index ?>" style="white-space: nowrap;"><?= htmlspecialchars($pw) ?></code>
+            <?php $percent = PassStrength($pw); $barClass = 'secbarbg-red'; if ($percent >= 100) { $barClass = 'secbarbg-green'; } elseif ($percent >= 90) { $barClass = 'secbarbg-yellow'; } elseif ($percent >= 50) { $barClass = 'secbarbg-orange'; } elseif ($percent >= 0) { $barClass = 'secbarbg-red'; } else { $barClass = 'secbarbg-red'; } ?>
+            <div class="progress position-absolute bottom-0 start-0 w-100" style="height: 3px;">
                 <div class="progress-bar <?= $barClass ?>" role="progressbar" style="width: <?= $percent ?>%;" aria-valuenow="<?= $percent ?>" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             <span class="text-success ms-2" id="check_<?= $index ?>" style="display:none;">✔</span>
@@ -284,6 +327,13 @@ slider("num_specials", $t['pw_specials'], $num_specials, 0, $length);
 </div>
 <?php endif; ?>
 </div>
+<footer class="text-center text-white mt-5">
+  <div class="container py-3 border-top border-light">
+    PHP Password Generator @Github <a href="https://github.com/DerHary/PHP-Password-Generator/" target="_blank" class="text-warning text-decoration-none">DerHary</a>
+  </div>
+</footer>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.password-card').forEach((el, i) => {
