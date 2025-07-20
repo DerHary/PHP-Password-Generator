@@ -1,4 +1,4 @@
-# 🔐 Password Generator
+# 🔐 PHP Password Generator
 
 A secure, customizable password generator built with PHP and Bootstrap.  
 Fully local, no dependencies, multi-language support, and instant copy-to-clipboard functionality.
