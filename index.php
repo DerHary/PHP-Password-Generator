@@ -225,7 +225,7 @@ function PassStrength($Password) {
 <title><?= $t['title'] ?></title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<?php include_once("img/base64_favicon.txt"); ?>
+<?php include_once"img/base64_favicon.txt"; ?>
 <style>
 .card-copied { background-color: #d1e7dd !important; color: #0f5132 !important; border: 1px solid #0f5132; }
 .password-card {
