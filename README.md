@@ -1,14 +1,15 @@
 # 🔐 PHP Password Generator
 
 A secure, customizable password generator built with PHP and Bootstrap.  
-Fully local, no dependencies, multi-language support, and instant copy-to-clipboard functionality.
+Multi-language support, and instant copy-to-clipboard functionality.
 
 ## ✨ Features
 
 - 🔢 Adjustable number and length of passwords
 - 🔠 Fine-tune number of digits, uppercase letters, and special characters
-- ✅ Enable/disable specific special characters: `! ? @ $ % # - _ +`
-- 🌍 Language selector: English, German, French, Spanish, Turkish (session-based)
+- ✅ Enable/disable specific special characters
+- 🌍 Language selector: English, German, French, Spanish, Turkish
+- 📋 Save Settings - Session based
 - 📋 Click-to-copy passwords with animation and ✔️ visual feedback
 - 📊 Each generated password is evaluated with a custom strength algorithm and displayed as a color-coded progress bar:
   - Strength calculation considers:
@@ -22,7 +23,7 @@ Fully local, no dependencies, multi-language support, and instant copy-to-clipbo
     - 🟡 Yellow: Strong (90–99%)
     - 🟢 Green: Very strong (100%)
   - The bar is shown at the bottom of each password card and animates into view
-- ⚠ Real-time warnings for weak configurations:
+- ⚠ On Load Warnings for weak configurations:
   - Length < 8 characters
   - No special characters selected
   - Sum of types (digits, uppercase, specials) exceeds total length
@@ -30,7 +31,9 @@ Fully local, no dependencies, multi-language support, and instant copy-to-clipbo
 ![Screenshot](https://raw.githubusercontent.com/DerHary/PasswordGenerator/refs/heads/main/img/screenshot.jpg)
 
 ## 💡 Usage
+Use on the hosted, ready to use Version from here: https://aschi.at/pwdgen/
 
+Or host your own:
 1. Deploy on a PHP-enabled web server.
 2. Open in your browser.
 3. Adjust sliders, special character checkboxes, and language – then click **Generate**.
@@ -40,12 +43,12 @@ Fully local, no dependencies, multi-language support, and instant copy-to-clipbo
 
 - PHP (no database, no tracking)
 - HTML5 + Bootstrap 5.3
-- Vanilla JavaScript
+- JavaScript
 
 ## 🧩 Why This Project?
 
-- Fast local tool for secure password generation
-- No backend, no internet required – works 100% locally
+- Fast tool for secure password generation
+- No backend, no internet required – works 100% locally (if hosted in own network)
 - Clean, responsive UI with language awareness and user feedback
 
 ## 📄 License
