@@ -15,6 +15,8 @@ Fully local, no dependencies, multi-language support, and instant copy-to-clipbo
   - No special characters
   - Total character types exceeding length
 
+![Screenshot](https://raw.githubusercontent.com/DerHary/PasswordGenerator/refs/heads/main/img/screenshot.jpg)
+
 ## 💡 Usage
 
 1. Deploy on a PHP-enabled web server.
