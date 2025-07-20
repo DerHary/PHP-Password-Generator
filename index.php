@@ -23,7 +23,7 @@ if (isset($_POST['reset'])) {
 }
 
 function getInt($key, $default, $min, $max) {
-    if (!isset($_POST[$key])) return $_SESSION[$key] ?? $default;
+    if (!isset($_POST[$key])) { return $_SESSION[$key] ?? $default; }
     $val = intval($_POST[$key]);
     $val = max($min, min($max, $val));
     $_SESSION[$key] = $val;
@@ -207,10 +207,10 @@ function PassStrength($Password) {
     // not good if password is more than 50% numbers
     if ($numCount > strlen($Password) * 0.5) { $W = $W - 5; }
     // other checks
-    if (!preg_match('/[A-Z]/', $Password)) $W -= 20; // no upper letters
-    if (!preg_match('/[a-z]/', $Password)) $W -= 20; // no small letters
-    if (!preg_match('/[0-9]/', $Password)) $W -= 20; // no digits
-    if (!preg_match('/[\W_]/', $Password)) $W -= 40; // no special chars
+    if (!preg_match('/[A-Z]/', $Password)) { $W -= 20; } // no upper letters
+    if (!preg_match('/[a-z]/', $Password)) { $W -= 20; } // no small letters
+    if (!preg_match('/[0-9]/', $Password)) { $W -= 20; } // no digits
+    if (!preg_match('/[\W_]/', $Password)) { $W -= 40; } // no special chars
     // no negative results
     if ($W < 0) { $W = 1; } elseif ($W > 100) { $W = 100; }
     // return rounded result
@@ -225,7 +225,7 @@ function PassStrength($Password) {
 <title><?= $t['title'] ?></title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<?php include("img/base64_favicon.txt"); ?>
+<?php include_once("img/base64_favicon.txt"); ?>
 <style>
 .card-copied { background-color: #d1e7dd !important; color: #0f5132 !important; border: 1px solid #0f5132; }
 .password-card {
