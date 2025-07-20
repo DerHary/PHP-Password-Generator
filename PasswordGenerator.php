@@ -1,4 +1,18 @@
 <?php
+
+/*
+#### PHP Password Generator ####
+A secure, customizable password generator built with PHP and Bootstrap.
+
+- Fast local tool, no tracking or backend
+- Great for generating multiple strong passwords on the fly
+- Clean UI, mobile-friendly, and language-aware
+
+GitHub: https://github.com/DerHary/PHP-Password-Generator
+
+#### PHP Password Generator ####
+*/
+
 session_start();
 
 function getInt($key, $default, $min, $max) {
