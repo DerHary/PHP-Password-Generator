@@ -4,7 +4,7 @@
 #### PHP Password Generator ####
 A secure, customizable password generator built with PHP and Bootstrap.
 
-- Fast local tool, no tracking or backend
+- Fast local tool, no backend
 - Great for generating multiple strong passwords on the fly
 - Clean UI, mobile-friendly, and language-aware
 
@@ -14,6 +14,13 @@ GitHub: https://github.com/DerHary/PHP-Password-Generator
 */
 
 session_start();
+
+if (isset($_POST['reset'])) {
+    session_unset();
+    session_destroy();
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
+}
 
 function getInt($key, $default, $min, $max) {
     if (!isset($_POST[$key])) return $_SESSION[$key] ?? $default;
@@ -32,6 +39,7 @@ $translations = [
     'de' => [
         'title' => '🔐 Passwort Generator',
         'generate' => 'Generieren',
+        'reset' => 'Zurücksetzen',
         'pw_count' => 'Anzahl Passwörter',
         'pw_length' => 'Passwortlänge',
         'pw_numbers' => 'Zahlen im Passwort',
@@ -45,6 +53,7 @@ $translations = [
     'en' => [
         'title' => '🔐 Password Generator',
         'generate' => 'Generate',
+        'reset' => 'Reset',
         'pw_count' => 'Number of Passwords',
         'pw_length' => 'Password Length',
         'pw_numbers' => 'Numbers in Password',
@@ -58,6 +67,7 @@ $translations = [
     'fr' => [
         'title' => '🔐 Générateur de mots de passe',
         'generate' => 'Générer',
+        'reset' => 'Réinitialiser',
         'pw_count' => 'Nombre de mots de passe',
         'pw_length' => 'Longueur du mot de passe',
         'pw_numbers' => 'Chiffres dans le mot de passe',
@@ -71,6 +81,7 @@ $translations = [
     'es' => [
         'title' => '🔐 Generador de contraseñas',
         'generate' => 'Generar',
+        'reset' => 'Restablecer',
         'pw_count' => 'Cantidad de contraseñas',
         'pw_length' => 'Longitud de la contraseña',
         'pw_numbers' => 'Números en la contraseña',
@@ -84,6 +95,7 @@ $translations = [
     'tr' => [
         'title' => '🔐 Şifre Oluşturucu',
         'generate' => 'Oluştur',
+        'reset' => 'Sıfırla',
         'pw_count' => 'Şifre sayısı',
         'pw_length' => 'Şifre uzunluğu',
         'pw_numbers' => 'Şifredeki rakamlar',
@@ -93,7 +105,6 @@ $translations = [
         'warn_sum' => '⚠ Uyarı: Karakter türlerinin toplamı şifre uzunluğunu aşıyor.',
         'warn_length' => '⚠ Uyarı: 8 karakterden kısa şifreler güvenli değildir.',
         'warn_special' => '⚠ Uyarı: Özel karakter içermeyen şifreler daha zayıf kabul edilir.'
-
     ]
 ];
 
@@ -126,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $numbers = '0123456789';
 $lower   = 'abcdefghijklmnopqrstuvwxyz';
-$upper   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+$upper   = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
 $special_pool = implode('', $enabled_specials ?? []);
 
 $warn_sum     = ($num_numbers + $num_upper + $num_specials) > $length;
@@ -152,125 +163,144 @@ for ($j = 0; $j < $count; $j++) {
     shuffle($pw_chars);
     $passwords[] = implode('', $pw_chars);
 }
+
+/* Make a Check of the generated Passwrd */
+function PassStrength($Password) {
+    // length check
+    $numCount = 0;
+    // initial strength = len^2/6
+    $W = (strlen($Password) * strlen($Password)) / 6;
+    if (is_numeric(substr($Password, 0, 1))) {
+        $numCount + 1; // note first character is numeric
+    }
+    for ($i=1; $i<strlen($Password); $i++) {
+        // if previous char was another one this is good, otherwise bad
+        $t = substr($Password, $i, 1); // this
+        $p = substr($Password, $i-1, 1); // previous
+        if ($t != $p) { $W = $W + 6; } else { $W = $W - 1; }
+        // check, if previous char was other case the current (good)
+        $upper =  ($t == strtoupper($t)); $lower =  ($t == strtolower($t)); $pupper = ($p == strtoupper($p)); $plower = ($p == strtolower($p));
+        // good if previous case is different than current
+        if ($upper != $pupper || $lower != $plower) { $W = $W + 3; }
+        // check if value is used multiple times
+        $occurences = explode($t, $Password); if (count($occurences) > 3) { $W = $W - 1; }
+        // count number of numeric characters
+        if (is_numeric($t)) { $numCount = $numCount + 2; }
+    }
+    // extra points if number of numeric characters is between 20 and 70 percent
+    if ($numCount > strlen($Password) * 0.2 && $numCount < strlen($Password) * 0.7) { $W = $W + 5; }
+    // not good if password is more than 50% numbers
+    if ($numCount > strlen($Password) * 0.5) { $W = $W - 5; }
+    // no negative results
+    if ($W < 0) { $W = 0; } elseif ($W > 100) { $W = 100; }
+    // return rounded result
+    return round($W);
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars($lang) ?>">
 <head>
-    <meta charset="UTF-8">
-    <title><?= $t['title'] ?></title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAHWN+ANDLxgAcYoEA7uvnAACb6wABwP8AANX+AM/JxAAApOsAD8/+AAXG/wAAvv0AnZKKAAGZ6QDNx8IAzsfCAOrn4wBvZGAAAK3rAACe7AAAoewAJNb7AAC3+QACwf4A0MrDAAGy9wAk3v4ABL35AAW9+QCfk4kA/v7+AAC+/wAAIyUAHGOBAACf6wAPzf4AS+//AGFbWwBiW1sAVmpjABAQEAACAQEAS+r9AEzq/QDNyMIAG199AAC6+wABuvsAHqbXAA/G+gDV0M0AlouBAAAmJwBwZWEAI9z+ALWrogAFCQ0AUWRdAJyRiQAeptgAlq+pAAC37AAAtfoAAKzqAAC4+gAAnesA0MnBAPLy8gCTh30AAJjpAAC9/QAAwP0A7uroAP///wAAJCYA4eHhAACd7ABVaWEAXFxcAMK6swAAtesAJNX7ABtigAAApuwAAMD+AAHA/gD7+/sABcP+AEvu/gABsfcAAbv8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASlcuUwMDAwMDAwMiIgFXSkopRlovW1tbW1tbMBoOKUpKKQU/DCAgICAgIEc/TSlKSikFPwwgIAcHICBHP00pSkopQhdVGBgGVhgYSEEUKUpKKSMdWAsLOTkLC1gcFSlKSikJMiQKCjwxCgokMlQpSkopQFI3GxsbGxsbNxYTKUpKKVEsWSUlJSUlJVkrPilKSh9LOj01NTU1NTVOKCEfSkpKSkUtREpKSkpEHjRKSkpKSko7UExKSkpKTDgNH0pKSkofNhkASkpKSgBDEkpKSkpKSgAPCCoAACoCEABKSkpKSkpKADMEERFJMwBKSkpKSkpKSkpPACcmAE9KSkpKSgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .card-copied {
-            background-color: #d1e7dd !important;
-            color: #0f5132 !important;
-            border: 1px solid #0f5132;
-        }
-        .password-card {
-            cursor: pointer;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-            opacity: 0;
-        }
-        .password-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        code {
-            color: inherit !important;
-        }
-    </style>
+<meta charset="UTF-8">
+<title><?= $t['title'] ?></title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.card-copied { background-color: #d1e7dd !important; color: #0f5132 !important; border: 1px solid #0f5132; }
+.password-card { cursor: pointer; transition: transform 0.2s ease, opacity 0.2s ease; opacity: 0; }
+.password-card.visible { opacity: 1; transform: translateY(0); }
+code { color: inherit !important; }
+.btn-wrap { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.secbarbg-red       { background-color:#FF0000; }
+.secbarbg-orange    { background-color: #fd7e14; }
+.secbarbg-yellow    { background-color: #FFF500; }
+.secbarbg-green     { background-color: #22FF00; }
+</style>
 </head>
 <body class="bg-dark text-light">
 <div class="container py-4">
-    <div class="card bg-secondary text-light">
-        <div class="card-body">
-            <form method="POST">
-                <div class="d-flex justify-content-between align-items-start">
-                    <h5 class="card-title mb-3"><?= $t['title'] ?></h5>
-                    <select name="lang" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
-                        <option value="de" <?= $lang === 'de' ? 'selected' : '' ?>>Deutsch</option>
-                        <option value="en" <?= $lang === 'en' ? 'selected' : '' ?>>English</option>
-                        <option value="fr" <?= $lang === 'fr' ? 'selected' : '' ?>>Français</option>
-                        <option value="es" <?= $lang === 'es' ? 'selected' : '' ?>>Español</option>
-                        <option value="tr" <?= $lang === 'tr' ? 'selected' : '' ?>>Türkçe</option>
-                    </select>
-                </div>
-
-                <?php if ($warn_sum): ?>
-                    <div class="alert alert-warning text-dark"><?= $t['warn_sum'] ?></div>
-                <?php endif; ?>
-                <?php if ($warn_length): ?>
-                    <div class="alert alert-warning text-dark"><?= $t['warn_length'] ?></div>
-                <?php endif; ?>
-                <?php if ($warn_special): ?>
-                    <div class="alert alert-warning text-dark"><?= $t['warn_special'] ?></div>
-                <?php endif; ?>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <?php
-                        function slider($name, $label, $value, $min, $max) {
-                            echo "<label class='form-label'>$label: <strong>$value</strong></label>";
-                            echo "<input type='range' class='form-range' name='$name' min='$min' max='$max' value='$value' oninput='this.previousElementSibling.querySelector(\"strong\").innerText = this.value'>";
-                        }
-
-                        slider("count", $t['pw_count'], $count, 1, 50);
-                        slider("length", $t['pw_length'], $length, 5, 30);
-                        slider("num_numbers", $t['pw_numbers'], $num_numbers, 0, $length);
-                        slider("num_upper", $t['pw_upper'], $num_upper, 0, $length);
-                        slider("num_specials", $t['pw_specials'], $num_specials, 0, $length);
-                        ?>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label"><?= $t['special_select'] ?>:</label><br>
-                        <?php foreach ($all_specials as $char): ?>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="special_<?= $char ?>" id="special_<?= $char ?>" value="1"
-                                    <?= in_array($char, $enabled_specials) ? 'checked' : '' ?>>
-                                <label class="form-check-label" for="special_<?= $char ?>"><?= htmlspecialchars($char) ?></label>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-warning mt-4"><?= $t['generate'] ?></button>
-            </form>
+<div class="card bg-secondary text-light">
+<div class="card-body">
+<form method="POST">
+<div class="d-flex justify-content-between align-items-start">
+<h5 class="card-title mb-3"><?= $t['title'] ?></h5>
+<select name="lang" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+<option value="de" <?= $lang === 'de' ? 'selected' : '' ?>>Deutsch</option>
+<option value="en" <?= $lang === 'en' ? 'selected' : '' ?>>English</option>
+<option value="fr" <?= $lang === 'fr' ? 'selected' : '' ?>>Français</option>
+<option value="es" <?= $lang === 'es' ? 'selected' : '' ?>>Español</option>
+<option value="tr" <?= $lang === 'tr' ? 'selected' : '' ?>>Türkçe</option>
+</select>
+</div>
+<?php if ($warn_sum): ?><div class="alert alert-warning text-dark"><?= $t['warn_sum'] ?></div><?php endif; ?>
+<?php if ($warn_length): ?><div class="alert alert-warning text-dark"><?= $t['warn_length'] ?></div><?php endif; ?>
+<?php if ($warn_special): ?><div class="alert alert-warning text-dark"><?= $t['warn_special'] ?></div><?php endif; ?>
+<div class="row">
+<div class="col-md-6">
+<?php
+function slider($name, $label, $value, $min, $max) {
+  echo "<label class='form-label'>$label: <strong>$value</strong></label>";
+  echo "<input type='range' class='form-range' name='$name' min='$min' max='$max' value='$value' oninput='this.previousElementSibling.querySelector(\"strong\").innerText = this.value'>";
+}
+slider("count", $t['pw_count'], $count, 1, 50);
+slider("length", $t['pw_length'], $length, 5, 30);
+slider("num_numbers", $t['pw_numbers'], $num_numbers, 0, $length);
+slider("num_upper", $t['pw_upper'], $num_upper, 0, $length);
+slider("num_specials", $t['pw_specials'], $num_specials, 0, $length);
+?>
+</div>
+<div class="col-md-6">
+<label class="form-label"><?= $t['special_select'] ?>:</label><br>
+<?php foreach ($all_specials as $char): ?>
+<div class="form-check form-check-inline">
+<input class="form-check-input" type="checkbox" name="special_<?= $char ?>" id="special_<?= $char ?>" value="1" <?= in_array($char, $enabled_specials) ? 'checked' : '' ?>>
+<label class="form-check-label" for="special_<?= $char ?>"><?= htmlspecialchars($char) ?></label>
+</div>
+<?php endforeach; ?>
+</div>
+</div>
+<div class="btn-wrap mt-4">
+<button type="submit" class="btn btn-warning"><?= $t['generate'] ?></button>
+<button type="submit" name="reset" value="1" class="btn btn-outline-light"><?= $t['reset'] ?></button>
+</div>
+</form>
+</div>
+</div>
+<?php if (!empty($passwords)): ?>
+<div class="row mt-4">
+<?php foreach ($passwords as $index => $pw): ?>
+    <div class="col-md-4 col-sm-6 mb-3">
+        <div class="card bg-secondary text-light h-100 password-card" id="card_<?= $index ?>">
+            <div class="card-body d-flex justify-content-between align-items-center password-content" data-index="<?= $index ?>">
+            <code id="pw_<?= $index ?>"><?= htmlspecialchars($pw) ?></code>
+            <?php $percent = PassStrength($pw); $barClass = 'secbarbg-red'; if ($percent >= 100) { $barClass = 'secbarbg-green'; } elseif ($percent >= 90) { $barClass = 'secbarbg-yellow'; } elseif ($percent >= 50) { $barClass = 'secbarbg-orange'; } elseif ($percent >= 0) { $barClass = 'secbarbg-red'; } ?>
+            <div class="progress position-absolute bottom-0 start-0 w-100" style="height: 1px;">
+                <div class="progress-bar <?= $barClass ?>" role="progressbar" style="width: <?= $percent ?>%;" aria-valuenow="<?= $percent ?>" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <span class="text-success ms-2" id="check_<?= $index ?>" style="display:none;">✔</span>
+            </div>
         </div>
     </div>
-
-    <?php if (!empty($passwords)): ?>
-        <div class="row mt-4">
-            <?php foreach ($passwords as $index => $pw): ?>
-                <div class="col-md-4 col-sm-6 mb-3">
-                    <div class="card bg-secondary text-light h-100 password-card" id="card_<?= $index ?>">
-                        <div class="card-body d-flex justify-content-between align-items-center password-content" data-index="<?= $index ?>">
-                            <code id="pw_<?= $index ?>"><?= htmlspecialchars($pw) ?></code>
-                            <span class="text-success ms-2" id="check_<?= $index ?>" style="display:none;">✔</span>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+<?php endforeach; ?>
 </div>
-
+<?php endif; ?>
+</div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('.password-card').forEach((el, i) => {
-        setTimeout(() => el.classList.add('visible'), i * 60);
+  document.querySelectorAll('.password-card').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), i * 60);
+  });
+  document.querySelectorAll('.password-content').forEach(el => {
+    el.addEventListener('click', () => {
+      const index = el.dataset.index;
+      const pwText = document.getElementById('pw_' + index).innerText;
+      const card = document.getElementById('card_' + index);
+      const check = document.getElementById('check_' + index);
+      navigator.clipboard.writeText(pwText).then(() => {
+        card.classList.add('card-copied');
+        check.style.display = 'inline';
+      });
     });
-
-    document.querySelectorAll('.password-content').forEach(el => {
-        el.addEventListener('click', () => {
-            const index = el.dataset.index;
-            const pwText = document.getElementById('pw_' + index).innerText;
-            const card = document.getElementById('card_' + index);
-            const check = document.getElementById('check_' + index);
-            navigator.clipboard.writeText(pwText).then(() => {
-                card.classList.add('card-copied');
-                check.style.display = 'inline';
-            });
-        });
-    });
+  });
 });
 </script>
 </body>
