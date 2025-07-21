@@ -183,7 +183,6 @@ function PassStrength($Password) {
     // length check
     $numCount = 0;
     // initial strength
-    //$W = (strlen($Password) * strlen($Password)) / 6;
     $W = min(strlen($Password) * 1.5, 30);
     if (is_numeric(substr($Password, 0, 1))) {
         $numCount += 1; // note first character is numeric
@@ -197,7 +196,7 @@ function PassStrength($Password) {
         $upper =  ($t == strtoupper($t)); $lower =  ($t == strtolower($t)); $pupper = ($p == strtoupper($p)); $plower = ($p == strtolower($p));
         // good if previous case is different than current
         if ($upper != $pupper || $lower != $plower) { $W = $W + 3; }
-        // check if value is used multiple times
+        // check if value is used multiple times - bad
         $occurences = explode($t, $Password); if (count($occurences) > 3) { $W = $W - 1; }
         // count number of numeric characters
         if (is_numeric($t)) { $numCount = $numCount + 2; }
@@ -211,7 +210,7 @@ function PassStrength($Password) {
     if (!preg_match('/[a-z]/', $Password)) { $W -= 20; } // no small letters
     if (!preg_match('/[0-9]/', $Password)) { $W -= 20; } // no digits
     if (!preg_match('/[\W_]/', $Password)) { $W -= 40; } // no special chars
-    // no negative results
+    // no negative results, also no zero value (must be 1-100)
     if ($W < 0) { $W = 1; } elseif ($W > 100) { $W = 100; }
     // return rounded result
     return round($W);
