@@ -218,29 +218,35 @@ function PassStrength($Password) {
 }
 
 /* Calculate estimated time to crack */
-function estimateCrackTime(string $password): string {
+function estimateCrackTime($password) {
     $length = strlen($password);
-    $charsets = 0;
+    $charset = 0;
 
-    if (preg_match('/[a-z]/', $password)) $charsets += 26;
-    if (preg_match('/[A-Z]/', $password)) $charsets += 26;
-    if (preg_match('/[0-9]/', $password)) $charsets += 10;
-    if (preg_match('/[^a-zA-Z0-9]/', $password)) $charsets += 33;
+    if (preg_match('/[a-z]/', $password)) $charset += 26;
+    if (preg_match('/[A-Z]/', $password)) $charset += 26;
+    if (preg_match('/[0-9]/', $password)) $charset += 10;
+    if (preg_match('/[^a-zA-Z0-9]/', $password)) $charset += 33; // gängige Sonderzeichen
 
-    if ($charsets === 0) return "1";
+    if ($charset === 0 || $length === 0) return '0s';
 
-    $combinations = bcpow($charsets, $length);
-    $guesses_per_second = bcpow(10, 9); // 1 Mrd./Sekunde
-    $seconds = bcdiv($combinations, $guesses_per_second, 0);
+    $combinations = bcpow($charset, $length); // hohe Genauigkeit
+    $guessesPerSecond = 1e10; // realistisch für Offline-Angreifer mit GPUs
+    $seconds = bcdiv($combinations, $guessesPerSecond, 2);
 
-    $hours = bcdiv($seconds, 3600, 1);
-    if ($hours < 24) return $hours . " H";
+    return formatTime($seconds);
+}
 
-    $days = bcdiv($seconds, 86400, 1);
-    if ($days < 365) return $days . " D";
+function formatTime($seconds) {
+    $s = floatval($seconds);
 
-    $years = bcdiv($seconds, 31536000, 1);
-    return $years . " Y";
+    if ($s < 1) return "< 1s";
+    if ($s < 60) return round($s) . "s";
+    if ($s < 3600) return round($s / 60) . "m";
+    if ($s < 86400) return round($s / 3600) . "h";
+    if ($s < 31536000) return round($s / 86400) . "d";
+    if ($s < 315360000) return round($s / 31536000) . "y";
+
+    return round($s / 31536000) . "y+";
 }
 
 ?>
