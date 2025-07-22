@@ -237,16 +237,19 @@ function estimateCrackTime($password) {
 }
 
 function formatTime($seconds) {
-    $s = floatval($seconds);
-
-    if ($s < 1) return "< 1s";
-    if ($s < 60) return round($s) . "s";
-    if ($s < 3600) return round($s / 60) . "m";
-    if ($s < 86400) return round($s / 3600) . "h";
-    if ($s < 31536000) return round($s / 86400) . "d";
-    if ($s < 315360000) return round($s / 31536000) . "y";
-
-    return round($s / 31536000) . "y+";
+    if ($seconds < 60) {
+        return round($seconds) . 's';
+    } elseif ($seconds < 3600) {
+        return round($seconds / 60) . 'm';
+    } elseif ($seconds < 86400) {
+        return round($seconds / 3600) . 'h';
+    } elseif ($seconds < 31536000) {
+        return round($seconds / 86400) . 'd';
+    } elseif ($seconds < 31536000 * 1000) {
+        return round($seconds / 31536000) . 'y';
+    } else {
+        return '>1000y';
+    }
 }
 
 ?>
