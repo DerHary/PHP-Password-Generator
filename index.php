@@ -183,6 +183,7 @@ function PassStrength($Password) {
     // length check
     $numCount = 0;
     // initial strength
+    //$W = (strlen($Password) * strlen($Password)) / 6;
     $W = min(strlen($Password) * 1.5, 30);
     if (is_numeric(substr($Password, 0, 1))) {
         $numCount += 1; // note first character is numeric
@@ -196,7 +197,7 @@ function PassStrength($Password) {
         $upper =  ($t == strtoupper($t)); $lower =  ($t == strtolower($t)); $pupper = ($p == strtoupper($p)); $plower = ($p == strtolower($p));
         // good if previous case is different than current
         if ($upper != $pupper || $lower != $plower) { $W = $W + 3; }
-        // check if value is used multiple times - bad
+        // check if value is used multiple times
         $occurences = explode($t, $Password); if (count($occurences) > 3) { $W = $W - 1; }
         // count number of numeric characters
         if (is_numeric($t)) { $numCount = $numCount + 2; }
@@ -210,10 +211,36 @@ function PassStrength($Password) {
     if (!preg_match('/[a-z]/', $Password)) { $W -= 20; } // no small letters
     if (!preg_match('/[0-9]/', $Password)) { $W -= 20; } // no digits
     if (!preg_match('/[\W_]/', $Password)) { $W -= 40; } // no special chars
-    // no negative results, also no zero value (must be 1-100)
+    // no negative results
     if ($W < 0) { $W = 1; } elseif ($W > 100) { $W = 100; }
     // return rounded result
     return round($W);
+}
+
+/* Calculate estimated time to crack */
+function estimateCrackTime(string $password): string {
+    $length = strlen($password);
+    $charsets = 0;
+
+    if (preg_match('/[a-z]/', $password)) $charsets += 26;
+    if (preg_match('/[A-Z]/', $password)) $charsets += 26;
+    if (preg_match('/[0-9]/', $password)) $charsets += 10;
+    if (preg_match('/[^a-zA-Z0-9]/', $password)) $charsets += 33;
+
+    if ($charsets === 0) return "1";
+
+    $combinations = bcpow($charsets, $length);
+    $guesses_per_second = bcpow(10, 9); // 1 Mrd./Sekunde
+    $seconds = bcdiv($combinations, $guesses_per_second, 0);
+
+    $hours = bcdiv($seconds, 3600, 1);
+    if ($hours < 24) return $hours . " H";
+
+    $days = bcdiv($seconds, 86400, 1);
+    if ($days < 365) return $days . " D";
+
+    $years = bcdiv($seconds, 31536000, 1);
+    return $years . " Y";
 }
 
 ?>
@@ -312,7 +339,11 @@ slider("num_specials", $t['pw_specials'], $num_specials, 0, 15);
     <div class="col-md-4 col-sm-6 mb-3">
         <div class="card bg-secondary text-light h-100 password-card" id="card_<?= $index ?>">
             <div class="card-body d-flex justify-content-between align-items-center password-content" data-index="<?= $index ?>">
-            <span class="position-absolute top-0 end-0 p-1 small text-white-50" title="<?= $t['score'] ?>"><?= PassStrength($pw) ?>%</span>
+            <?php $strength = PassStrength($pw); $time = estimateCrackTime($pw); ?>
+                <div class="position-absolute top-0 end-0 p-1 text-end small text-white-50" title="<?= $t['score'] ?>"><?= $strength ?>%
+                    <br>
+                    <small style="font-size: 0.65em;"><?= $time ?></small>
+                </div>
             <code id="pw_<?= $index ?>" style="white-space: nowrap;"><?= htmlspecialchars($pw) ?></code>
             <?php $percent = PassStrength($pw); $barClass = 'secbarbg-red'; if ($percent >= 100) { $barClass = 'secbarbg-green'; } elseif ($percent >= 90) { $barClass = 'secbarbg-yellow'; } elseif ($percent >= 50) { $barClass = 'secbarbg-orange'; } elseif ($percent >= 0) { $barClass = 'secbarbg-red'; } else { $barClass = 'secbarbg-red'; } ?>
             <div class="progress position-absolute bottom-0 start-0 w-100" style="height: 3px;">

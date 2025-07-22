@@ -27,6 +27,7 @@ Multi-language support, and instant copy-to-clipboard functionality.
   - Length < 8 characters
   - No special characters selected
   - Sum of types (digits, uppercase, specials) exceeds total length
+- 🔠 Calculation of an estimated time to crack the password
 
 ![Screenshot](https://raw.githubusercontent.com/DerHary/PasswordGenerator/refs/heads/main/img/screenshot.jpg)
 
