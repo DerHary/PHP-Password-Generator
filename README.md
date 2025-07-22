@@ -29,7 +29,7 @@ Multi-language support, and instant copy-to-clipboard functionality.
   - Sum of types (digits, uppercase, specials) exceeds total length
 - 🔠 Calculation of an estimated time to crack the password
 
-![Screenshot](https://raw.githubusercontent.com/DerHary/PasswordGenerator/refs/heads/main/img/screenshot.jpg)
+![Screenshot](https://raw.githubusercontent.com/DerHary/PHP-Password-Generator/refs/heads/main/img/screenshot.jpg)
 
 ## 💡 Usage
 Use on the hosted, ready to use Version from here: https://aschi.at/pwdgen/
