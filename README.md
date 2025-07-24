@@ -32,7 +32,7 @@ Multi-language support, and instant copy-to-clipboard functionality.
 ![Screenshot](https://raw.githubusercontent.com/DerHary/PHP-Password-Generator/refs/heads/main/img/screenshot.jpg)
 
 ## 💡 Usage
-Use on the hosted, ready to use Version from here: https://aschi.at/pwdgen/
+Try or use the hosted, ready to use Version from here: https://aschi.at/php-password-generator/
 
 Or host your own:
 1. Deploy on a PHP-enabled web server.
